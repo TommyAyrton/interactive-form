@@ -49,8 +49,6 @@ const getSelectedOption = (sel) => {
 } 
 // Select Payment Info
 const selectPayment = document.getElementById('payment');
-const optionSelectPay = selectPayment.querySelector('option');
-optionSelectPay.setAttribute('hidden', true);
 const divCreditCard = document.getElementById('credit-card');
 const divPaypal = document.getElementById('paypal');
 const divBitcoin = document.getElementById('bitcoin');
@@ -220,6 +218,7 @@ window.onload = function() {
     if (supportsLocalStorage) {
         inputName.focus();
         inputOtherTitle.style.display = 'none';
+        selectPayment[1].selected = true;
 
         // Hide options for 'selectColor'
         for (let i = 0, len = selectColor.length; i < len; i++) {
@@ -227,7 +226,7 @@ window.onload = function() {
         }
 
         // Hide 'div' payment info
-        divCreditCard.style.display = 'none';
+        divCreditCard.style.display = 'block';
         divPaypal.style.display = 'none';
         divBitcoin.style.display = 'none';
         
