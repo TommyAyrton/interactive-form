@@ -1,39 +1,39 @@
-"use strict";
+'use strict';
 // Global variabel
 let activityCost = 0;
 // Test for local storage
 const supportsLocalStorage = () => {
     try {
-        return "localStorage" in window && window["localStorage"] !== null;
+        return 'localStorage' in window && window['localStorage'] !== null;
     } catch (e) {
         return false;
     }
 };
 
 // Form variable
-const form = document.querySelector("form");
+const form = document.querySelector('form');
 
 // Input Variables
-const inputName = document.querySelector("input#name");
-const inputEmail = document.querySelector("input#mail");
-const inputOtherTitle = document.querySelector("input#other-title");
+const inputName = document.querySelector('input#name');
+const inputEmail = document.querySelector('input#mail');
+const inputOtherTitle = document.querySelector('input#other-title');
 
 // Select Job Role
-const selectJobRole = document.getElementById("title");
+const selectJobRole = document.getElementById('title');
 // Select Design
-const selectDesign = document.getElementById("design");
+const selectDesign = document.getElementById('design');
 // Select Color
-const selectColor = document.getElementById("color");
-let option = new Option("Please select a T-shirt theme", "value", true, true);
+const selectColor = document.getElementById('color');
+let option = new Option('Please select a T-shirt theme', 'value', true, true);
 // option.setAttribute("hidden", true);
 selectColor.appendChild(option);
 
 // Section Activities
-const chkActivities = document.querySelector("fieldset.activities");
-const inputActivities = chkActivities.querySelectorAll("input");
+const chkActivities = document.querySelector('fieldset.activities');
+const inputActivities = chkActivities.querySelectorAll('input');
 const lengthActivities = inputActivities.length;
 // Create 'label' element for input 'data-cost'
-const textTotal = document.createElement("label");
+const textTotal = document.createElement('label');
 chkActivities.appendChild(textTotal);
 
 // Function to get the selected option
@@ -48,13 +48,13 @@ const getSelectedOption = (sel) => {
     return opt;
 };
 // Select Payment Info
-const selectPayment = document.getElementById("payment");
-const divCreditCard = document.getElementById("credit-card");
-const divPaypal = document.getElementById("paypal");
-const divBitcoin = document.getElementById("bitcoin");
-const inputCreditCard = document.getElementById("cc-num");
-const inputZip = document.getElementById("zip");
-const inputCVV = document.getElementById("cvv");
+const selectPayment = document.getElementById('payment');
+const divCreditCard = document.getElementById('credit-card');
+const divPaypal = document.getElementById('paypal');
+const divBitcoin = document.getElementById('bitcoin');
+const inputCreditCard = document.getElementById('cc-num');
+const inputZip = document.getElementById('zip');
+const inputCVV = document.getElementById('cvv');
 
 // Input Funtions Validations: validated each input
 const isValidUsername = (username) => {
@@ -93,39 +93,39 @@ const createListener = (validator) => {
         const input = e.target;
         const text = e.target.value;
         const valid = validator(text);
-        if (text !== "" && !valid) {
-            input.style.borderColor = "red";
+        if (text !== '' && !valid) {
+            input.style.borderColor = 'red';
         } else {
-            input.style.borderColor = "#5e97b0";
+            input.style.borderColor = '#5e97b0';
         }
     };
 };
 
 // Add events
 // Add event change: show input 'other-title'
-selectJobRole.addEventListener("change", () => {
+selectJobRole.addEventListener('change', () => {
     let opt = getSelectedOption(selectJobRole);
-    if (opt.value === "other") {
-        inputOtherTitle.style.display = "block";
+    if (opt.value === 'other') {
+        inputOtherTitle.style.display = 'block';
     } else {
-        inputOtherTitle.style.display = "none";
+        inputOtherTitle.style.display = 'none';
     }
 });
 // Add event: show options on 'color' input by 'design' input
-selectDesign.addEventListener("change", () => {
+selectDesign.addEventListener('change', () => {
     let opt = getSelectedOption(selectDesign);
     for (let i = 0, len = selectColor.length; i < len; i++) {
-        selectColor[i].style.display = "none";
-        if (opt.value === "js puns") {
+        selectColor[i].style.display = 'none';
+        if (opt.value === 'js puns') {
             selectColor.options[0].selected = true;
             for (let j = 0; j < 3; j++) {
-                selectColor[j].style.display = "block";
+                selectColor[j].style.display = 'block';
             }
         }
-        if (opt.value === "heart js") {
+        if (opt.value === 'heart js') {
             selectColor.options[3].selected = true;
             for (let k = 3; k < 6; k++) {
-                selectColor[k].style.display = "block";
+                selectColor[k].style.display = 'block';
             }
         }
         if (selectDesign.options[0].selected) {
@@ -134,48 +134,48 @@ selectDesign.addEventListener("change", () => {
     }
 });
 // Add event change: show/hide payment method
-selectPayment.addEventListener("change", () => {
+selectPayment.addEventListener('change', () => {
     let opt = getSelectedOption(selectPayment);
     for (let i = 0; i < 3; i++) {
-        divCreditCard.style.display = "none";
-        divPaypal.style.display = "none";
-        divBitcoin.style.display = "none";
-        if (opt.value === "credit card") {
-            divCreditCard.style.display = "block";
-        } else if (opt.value === "paypal") {
-            divPaypal.style.display = "block";
-        } else if (opt.value === "bitcoin") {
-            divBitcoin.style.display = "block";
+        divCreditCard.style.display = 'none';
+        divPaypal.style.display = 'none';
+        divBitcoin.style.display = 'none';
+        if (opt.value === 'credit card') {
+            divCreditCard.style.display = 'block';
+        } else if (opt.value === 'paypal') {
+            divPaypal.style.display = 'block';
+        } else if (opt.value === 'bitcoin') {
+            divBitcoin.style.display = 'block';
         }
     }
 });
 // Add event change: loop over the checkbox elements and disabled if checked
-chkActivities.addEventListener("change", (e) => {
+chkActivities.addEventListener('change', (e) => {
     const selectInput = e.target;
-    const selectName = selectInput.getAttribute("name");
-    const selectDayTime = selectInput.getAttribute("data-day-and-time");
-    const selectCost = parseInt(selectInput.getAttribute("data-cost"));
+    const selectName = selectInput.getAttribute('name');
+    const selectDayTime = selectInput.getAttribute('data-day-and-time');
+    const selectCost = parseInt(selectInput.getAttribute('data-cost'));
 
     if (selectInput.checked) {
         activityCost += selectCost;
         for (let i = 0; i < lengthActivities; i++) {
             if (
-                inputActivities[i].getAttribute("data-day-and-time") ===
+                inputActivities[i].getAttribute('data-day-and-time') ===
                     selectDayTime &&
-                inputActivities[i].getAttribute("name") !== selectName
+                inputActivities[i].getAttribute('name') !== selectName
             ) {
-                inputActivities[i].disabled = "true";
+                inputActivities[i].disabled = 'true';
             }
         }
     } else {
         activityCost -= selectCost;
         for (let i = 0; i < lengthActivities; i++) {
             if (
-                inputActivities[i].getAttribute("data-day-and-time") ===
+                inputActivities[i].getAttribute('data-day-and-time') ===
                     selectDayTime &&
-                inputActivities[i].getAttribute("name") !== selectName
+                inputActivities[i].getAttribute('name') !== selectName
             ) {
-                inputActivities[i].disabled = "";
+                inputActivities[i].disabled = '';
             }
         }
     }
@@ -200,7 +200,7 @@ const formSubmit = (e) => {
         textTotal.focus();
         return;
     }
-    if (opt.value === "credit card") {
+    if (opt.value === 'credit card') {
         if (!isValidCreditCard(inputCreditCard)) {
             inputCreditCard.focus();
             return;
@@ -218,30 +218,30 @@ const formSubmit = (e) => {
 };
 
 //  Valid each input
-inputName.addEventListener("input", createListener(isValidUsername));
-inputEmail.addEventListener("input", createListener(isValidEmail));
-inputCreditCard.addEventListener("input", createListener(isValidCreditCard));
-inputZip.addEventListener("input", createListener(isValidZipCode));
-inputCVV.addEventListener("input", createListener(isValidCVV));
+inputName.addEventListener('input', createListener(isValidUsername));
+inputEmail.addEventListener('input', createListener(isValidEmail));
+inputCreditCard.addEventListener('input', createListener(isValidCreditCard));
+inputZip.addEventListener('input', createListener(isValidZipCode));
+inputCVV.addEventListener('input', createListener(isValidCVV));
 
 //
 window.onload = function () {
     if (supportsLocalStorage) {
         inputName.focus();
-        inputOtherTitle.style.display = "none";
+        inputOtherTitle.style.display = 'none';
         selectPayment[1].selected = true;
 
         // Hide options for 'selectColor'
         for (let i = 0, len = selectColor.length; i < len; i++) {
-            selectColor[i].style.display = "none";
+            selectColor[i].style.display = 'none';
         }
 
         // Hide 'div' payment info
-        divCreditCard.style.display = "block";
-        divPaypal.style.display = "none";
-        divBitcoin.style.display = "none";
+        divCreditCard.style.display = 'block';
+        divPaypal.style.display = 'none';
+        divBitcoin.style.display = 'none';
 
         // Valid all input on form submit
-        form.addEventListener("submit", formSubmit);
+        form.addEventListener('submit', formSubmit);
     }
 };
