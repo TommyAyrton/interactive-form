@@ -22,6 +22,8 @@ const inputOtherTitle = document.querySelector('input#other-title');
 const selectJobRole = document.getElementById('title');
 // Select Design
 const selectDesign = document.getElementById('design');
+let optDesign = selectDesign.querySelector('option');
+optDesign.setAttribute('hidden', true);
 // Select Color
 const selectColor = document.getElementById('color');
 let option = new Option('Please select a T-shirt theme', 'value', true, true);
@@ -52,9 +54,9 @@ const selectPayment = document.getElementById('payment');
 const divCreditCard = document.getElementById('credit-card');
 const divPaypal = document.getElementById('paypal');
 const divBitcoin = document.getElementById('bitcoin');
-const inputCreditCard = document.getElementById('cc-num');
-const inputZip = document.getElementById('zip');
-const inputCVV = document.getElementById('cvv');
+const inputCreditCard = divCreditCard.querySelector('input#cc-num');
+const inputZip = divCreditCard.querySelector('input#zip');
+const inputCVV = divCreditCard.querySelector('input#cvv');
 
 // Input Funtions Validations: validated each input
 const isValidUsername = (username) => {
@@ -64,7 +66,14 @@ const isValidEmail = (email) => {
     return /^[^@]+@[^@.]+\.[a-z]+$/i.test(email);
 };
 const isValidCreditCard = (card) => {
-    // Visa, Mastercard, Discover
+    /**
+     * Visa
+     * 13 or 16 digits, starting with 4.
+     * MasterCard
+     * 16 digits, starting with 51 through 55.
+     * Discover
+     * 16 digits, starting with 6011 or 65.
+     *  **/
     return /^(?:4\d([\- ])?\d{6}\1\d{5}|(?:4\d{3}|5[1-5]\d{2}|6011)([\- ])?\d{4}\2\d{4}\2\d{4})$/.test(
         card
     );
@@ -77,8 +86,8 @@ const isValidCVV = (cvv) => {
     return /^[0-9]{3,4}$/.test(cvv);
 };
 const isValidActivities = (activities) => {
-    for (let i = 0, len = activities.length; i < len; i++) {
-        const element = activities[i];
+    for (let i = 0, len = inputActivities.length; i < len; i++) {
+        const element = inputActivities[i];
         if (!element.checked) {
             return false;
         } else {
@@ -87,6 +96,17 @@ const isValidActivities = (activities) => {
     }
 };
 
+// Show message error
+const showError = (input, message) => {
+    const parentElement = input.parentElement;
+    const lblError = document.createElement('label');
+    lblError.innerText = `${message}`;
+    lblError.style.color = 'red';
+    const nextElement = input.nextElementSibling;
+    parentElement.insertBefore(lblError, nextElement);
+    // vanish 2 seconds
+    setTimeout(() => lblError.remove(), 3000);
+};
 // Call validators
 const createListener = (validator) => {
     return (e) => {
@@ -128,9 +148,9 @@ selectDesign.addEventListener('change', () => {
                 selectColor[k].style.display = 'block';
             }
         }
-        if (selectDesign.options[0].selected) {
-            selectColor[6].selected = true;
-        }
+        // if (selectDesign.options[0].selected) {
+        //     selectColor[6].selected = true;
+        // }
     }
 });
 // Add event change: show/hide payment method
@@ -180,6 +200,7 @@ chkActivities.addEventListener('change', (e) => {
         }
     }
     textTotal.innerText = `Total Cost: $${activityCost}`;
+    textTotal.style.color = '';
 });
 
 // Form submit
@@ -188,28 +209,37 @@ const formSubmit = (e) => {
     e.preventDefault();
     let opt = getSelectedOption(selectPayment);
     if (!isValidUsername(inputName.value)) {
+        showError(inputName, 'Provied a valid name, lowercase only');
         inputName.focus();
         return;
     }
     if (!isValidEmail(inputEmail.value)) {
+        showError(inputEmail, 'Please provied a valid email');
         inputEmail.focus();
         return;
     }
     if (!isValidActivities(inputActivities)) {
-        textTotal.innerText = `Select one or more activities`;
+        textTotal.innerText = `You must select at least one activity`;
+        textTotal.style.color = 'red';
         textTotal.focus();
         return;
     }
     if (opt.value === 'credit card') {
-        if (!isValidCreditCard(inputCreditCard)) {
+        if (!isValidCreditCard(inputCreditCard.value)) {
+            showError(
+                inputCreditCard,
+                'Invalid card - Only Visa, Mastercard or Discover'
+            );
             inputCreditCard.focus();
             return;
         }
-        if (!isValidZipCode(inputZip)) {
+        if (!isValidZipCode(inputZip.value)) {
+            showError(inputZip, 'Zip code have 5 digits');
             inputZip.focus();
             return;
         }
-        if (!isValidCVV(inputCVV)) {
+        if (!isValidCVV(inputCVV.value)) {
+            showError(inputCVV, 'CVV code have 3 digits');
             inputCVV.focus();
             return;
         }
