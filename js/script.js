@@ -86,13 +86,17 @@ const isValidCVV = (cvv) => {
     return /^[0-9]{3,4}$/.test(cvv);
 };
 const isValidActivities = (activities) => {
-    for (let i = 0, len = inputActivities.length; i < len; i++) {
-        const element = inputActivities[i];
-        if (!element.checked) {
-            return false;
-        } else {
-            return true;
+    let count = 0;
+    for (let i = 0, len = activities.length; i < len; i++) {
+        const isChecked = activities[i].checked;
+        if (isChecked) {
+            count += 1;
         }
+    }
+    if (count > 0) {
+        return true;
+    } else {
+        return false;
     }
 };
 
@@ -104,7 +108,7 @@ const showError = (input, message) => {
     lblError.style.color = 'red';
     const nextElement = input.nextElementSibling;
     parentElement.insertBefore(lblError, nextElement);
-    // vanish 2 seconds
+    // vanish 3 seconds
     setTimeout(() => lblError.remove(), 3000);
 };
 // Call validators
@@ -244,6 +248,7 @@ const formSubmit = (e) => {
             return;
         }
     }
+    alert('Form submitted!');
     form.submit();
 };
 
